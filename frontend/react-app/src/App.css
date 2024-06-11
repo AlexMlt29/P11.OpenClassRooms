@@ -13,6 +13,20 @@ body {
   min-height: 100vh;
 }
 
+.fa-user-circle {
+  margin-right: 0.2rem;
+  font-size: 1.5rem;
+  width: 16px;
+  height: 16px;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100vh;
+}
+
 .main {
   flex: 1;
 }
