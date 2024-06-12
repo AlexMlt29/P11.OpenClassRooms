@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import SignInPage from "./pages/SignInPage";
-import LogInPage from "./pages/LogInPage";
+import ProfilPage from "./pages/ProfilPage";
 import './App.css';
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/SignInPage" element={<SignInPage />} />
-          <Route path="/LogInPage" element={<LogInPage />} />
+          <Route path="/ProfilPage" element={<ProfilPage />} />
         </Routes>
       </Router>
     );

@@ -228,6 +228,15 @@ body {
   padding: 0;
 }
 
+.error-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  height: 100vh;
+  width: 100%;
+}
+
 .account {
   display: flex;
   justify-content: space-between;
