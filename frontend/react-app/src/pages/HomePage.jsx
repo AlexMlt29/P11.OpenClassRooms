@@ -7,7 +7,7 @@ import logo3 from "../logos/icon-security.png";
 
 function HomePage() {
   return (
-    <div>
+    <div className="app-container">
       <Header />
       <main>
         <div className="hero">
