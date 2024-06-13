@@ -38,6 +38,7 @@ const SignInPage = () => {
       }
 
       const data = await response.json();
+      console.log("Token received:", data.token); // Log the received 
       localStorage.setItem('token', data.token);
 
       if (rememberMe) {

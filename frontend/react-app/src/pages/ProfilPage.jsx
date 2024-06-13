@@ -8,14 +8,39 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
 function ProfilPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+
     if (token) {
       setIsAuthenticated(true);
+      fetchProfile(token);
     }
   }, []);
+
+  const fetchProfile = async (token) => {
+    try {
+      const response = await fetch('http://localhost:3001/api/v1/user/profile', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUserProfile(data.body);
+      } else {
+        setError(`Failed to fetch profile data.`);
+      }
+    } catch (error) {
+      setError(`Error: ${error.message}`);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -28,7 +53,7 @@ function ProfilPage() {
       <div className="app-container">
         <Header />
         <main className="main bg-dark">
-          <h1 className="error-login">Log Out Successfull !</h1>
+          <h1 className="error-login">Log Out Successful!</h1>
         </main>
         <Footer />
       </div>
@@ -54,15 +79,16 @@ function ProfilPage() {
           <h1>
             Welcome back
             <br />
-            Tony Jarvis!
+            {userProfile && `${userProfile.firstName} ${userProfile.lastName}`}!
           </h1>
           <button className="edit-button">Edit Name</button>
         </div>
         <h2 className="sr-only">Accounts</h2>
+        {error && <p className="error-message">{error}</p>}
         <section className="account">
           <div className="account-content-wrapper">
             <h3 className="account-title">Argent Bank Checking (x8349)</h3>
-            <p className="account-amount">$2,082.79</p>
+            <p className="account-amount">?</p>
             <p className="account-amount-description">Available Balance</p>
           </div>
           <div className="account-content-wrapper cta">
@@ -72,7 +98,7 @@ function ProfilPage() {
         <section className="account">
           <div className="account-content-wrapper">
             <h3 className="account-title">Argent Bank Savings (x6712)</h3>
-            <p className="account-amount">$10,928.42</p>
+            <p className="account-amount">?</p>
             <p className="account-amount-description">Available Balance</p>
           </div>
           <div className="account-content-wrapper cta">
@@ -82,7 +108,7 @@ function ProfilPage() {
         <section className="account">
           <div className="account-content-wrapper">
             <h3 className="account-title">Argent Bank Credit Card (x8349)</h3>
-            <p className="account-amount">$184.30</p>
+            <p className="account-amount">?</p>
             <p className="account-amount-description">Current Balance</p>
           </div>
           <div className="account-content-wrapper cta">
