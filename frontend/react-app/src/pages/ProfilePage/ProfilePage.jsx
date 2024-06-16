@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import Footer from "../../components/Footer/Footer";
 import UserProfileAccount from "../../components/UserProfile/UserProfileAccount";
-import EditProfilePage from "../../components/UserProfile/EditProfileForm";
+import EditProfilePage from "../../components/EditProfile/EditProfileForm";
 import UserProfilePage from "../../components/UserProfile/UserProfilePage";
 import "./ProfilePage.css";
 

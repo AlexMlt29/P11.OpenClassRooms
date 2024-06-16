@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateUserProfile } from "../../redux/slices/profileSlice";
-import "../UserProfile/EditProfileForm.css";
+import "../EditProfile/EditProfileForm.css";
 
 const EditProfileForm = ({ userProfile, setIsEditing }) => {
   const [userName, setUserName] = useState(userProfile.userName);
