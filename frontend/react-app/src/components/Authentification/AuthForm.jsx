@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginSuccess, loginFailure } from '../redux/slices/authSlice';
+import { loginSuccess, loginFailure } from '../../redux/slices/authSlice';
+import "../Authentification/Auth.css";
 
 const AuthForm = () => {
   const [email, setEmail] = useState('');
@@ -57,11 +58,11 @@ const AuthForm = () => {
     <form onSubmit={handleSubmit}>
       <div className="input-wrapper">
         <label htmlFor="username">Username</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <input id="username" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
       </div>
       <div className="input-wrapper">
         <label htmlFor="password">Password</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </div>
       <div className="input-remember">
         <input type="checkbox" id="remember-me" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />

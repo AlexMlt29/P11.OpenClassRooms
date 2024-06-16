@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchUserProfile } from "../redux/slices/profileSlice";
+import { fetchUserProfile } from "../../redux/slices/profileSlice";
 
 const UserProfilePage = () => {
   const dispatch = useDispatch();

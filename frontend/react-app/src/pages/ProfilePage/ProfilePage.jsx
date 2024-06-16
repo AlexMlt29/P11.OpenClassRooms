@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../images/argentBankLogo.png";
+import image from "../../images/argentBankLogo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import Footer from "../components/Footer";
-import UserProfileAccount from "../components/UserProfileAccount";
-import AuthForm from "../components/AuthForm";
-import UserProfilePage from "../components/UserProfilePage";
+import Footer from "../../components/Footer/Footer";
+import UserProfileAccount from "../../components/UserProfile/UserProfileAccount";
+import EditProfilePage from "../../components/UserProfile/EditProfileForm";
+import UserProfilePage from "../../components/UserProfile/UserProfilePage";
+import "./ProfilePage.css";
 
 function ProfilPage() {
   const [isEditing, setIsEditing] = useState(false);
@@ -16,7 +17,7 @@ function ProfilPage() {
     <div className="app-container">
       <nav className="main-nav">
         <Link to="/" className="main-nav-logo">
-          <img className="main-nav-logo-image" src={logo} alt="Argent Bank Logo" />
+          <img className="main-nav-logo-image" src={image} alt="Argent Bank Logo" />
           <h1 className="sr-only">Argent Bank</h1>
         </Link>
         <div>
@@ -32,14 +33,14 @@ function ProfilPage() {
           <h1>
             Welcome back
             <br />
-            {userProfile && `${userProfile.firstName} ${userProfile.lastName}`}!
+            {userProfile && `${userProfile.firstName} ${userProfile.lastName}`} !
           </h1>
           {!isEditing && <button className="edit-button" onClick={() => setIsEditing(true)}>Edit Name</button>}
+          {isEditing && <EditProfilePage userProfile={userProfile} setIsEditing={setIsEditing} />}
         </div>
         <h2 className="sr-only">Accounts</h2>
         {error && <p className="error-message">{error}</p>}
         {loading ? <p>Loading...</p> : <UserProfileAccount />}
-        {isEditing && <AuthForm userProfile={userProfile} setIsEditing={setIsEditing} />}
       </main>
       <Footer />
     </div>

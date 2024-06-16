@@ -1,9 +1,10 @@
 import React from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import AuthForm from '../components/AuthForm';
+import AuthForm from '../../components/Authentification/AuthForm';
+import "./AuthPage.css";
 
 const AuthPage = () => {
   return (
