@@ -1,31 +1,17 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUserProfile } from "../redux/slices/profileSlice";
-import Footer from "../components/Footer";
-import { Link, useNavigate } from "react-router-dom";
+// src/pages/ProfilPage.jsx
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import logo from "../images/argentBankLogo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import ProfileAccount from "../components/ProfileAccount";
+import Footer from "../components/Footer";
+import UserProfileAccount from "../components/UserProfileAccount";
+import AuthForm from "../components/AuthForm";
+import UserProfilePage from "../components/UserProfilePage";
 
-function ProfilePage() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { userProfile, error, loading } = useSelector((state) => state.profile);
-  const token = localStorage.getItem('token');
-
-  useEffect(() => {
-    if (token) {
-      dispatch(fetchUserProfile(token));
-    } else {
-      navigate('/');
-    }
-  }, [dispatch, navigate, token]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
-  };
+function ProfilPage() {
+  const [isEditing, setIsEditing] = useState(false);
+  const { userProfile, error, loading, handleLogout } = UserProfilePage();
 
   return (
     <div className="app-container">
@@ -47,17 +33,18 @@ function ProfilePage() {
           <h1>
             Welcome back
             <br />
-            {userProfile && `${userProfile.firstName} ${userProfile.lastName}`} !
+            {userProfile && `${userProfile.firstName} ${userProfile.lastName}`}!
           </h1>
-          <button className="edit-button">Edit Name</button>
+          {!isEditing && <button className="edit-button" onClick={() => setIsEditing(true)}>Edit Name</button>}
         </div>
         <h2 className="sr-only">Accounts</h2>
         {error && <p className="error-message">{error}</p>}
-        {loading ? <p>Loading...</p> : <ProfileAccount />}
+        {loading ? <p>Loading...</p> : <UserProfileAccount />}
+        {isEditing && <AuthForm userProfile={userProfile} setIsEditing={setIsEditing} />}
       </main>
       <Footer />
     </div>
   );
 }
 
-export default ProfilePage;
+export default ProfilPage;
