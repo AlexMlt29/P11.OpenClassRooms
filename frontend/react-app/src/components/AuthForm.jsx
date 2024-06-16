@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess, loginFailure } from '../redux/slices/authSlice';
 
-const SignInForm = () => {
+const AuthForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -47,7 +47,7 @@ const SignInForm = () => {
       }
 
       dispatch(loginSuccess({ user: data.body.user, token: data.body.token }));
-      window.location.href = '/ProfilPage';
+      window.location.href = '/ProfilePage';
     } catch (err) {
       dispatch(loginFailure('Email ou mot de passe incorrect.'));
     }
@@ -73,4 +73,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default AuthForm;

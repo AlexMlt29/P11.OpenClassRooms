@@ -3,9 +3,9 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import SignInForm from '../components/SignInForm';
+import AuthForm from '../components/AuthForm';
 
-const SignInPage = () => {
+const AuthPage = () => {
   return (
     <div className="app-container">
       <Header />
@@ -13,7 +13,7 @@ const SignInPage = () => {
         <section className="sign-in-content">
           <FontAwesomeIcon icon={faUserCircle}/>
           <h1>Sign In</h1>
-          <SignInForm />
+          <AuthForm />
         </section>
       </main>
       <Footer />
@@ -21,4 +21,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default AuthPage;

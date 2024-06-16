@@ -1,55 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserProfile } from "../redux/slices/profileSlice";
 import Footer from "../components/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/argentBankLogo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import ProfilAccount from "../components/ProfilAccount"
+import ProfilAccount from "../components/ProfilAccount";
 
-function ProfilPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userProfile, setUserProfile] = useState(null);
-  const [error, setError] = useState(null);
+function ProfilePage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { userProfile, error, loading } = useSelector((state) => state.profile);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-
     if (token) {
-      setIsAuthenticated(true);
-      fetchProfile(token);
+      dispatch(fetchUserProfile(token));
+    } else {
+      navigate('/');
     }
-  }, [navigate]);
-
-  const fetchProfile = async (token) => {
-    try {
-      const response = await fetch('http://localhost:3001/api/v1/user/profile', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({}),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setUserProfile(data.body);
-      } else {
-        setError(`Failed to fetch profile data.`);
-      }
-    } catch (error) {
-      setError(`Error: ${error.message}`);
-    }
-  };
+  }, [dispatch, navigate, token]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    setIsAuthenticated(false);
-  };
-
-  if (!isAuthenticated) {
     navigate('/');
-  }
+  };
 
   return (
     <div className="app-container">
@@ -77,11 +53,11 @@ function ProfilPage() {
         </div>
         <h2 className="sr-only">Accounts</h2>
         {error && <p className="error-message">{error}</p>}
-        <ProfilAccount />
+        {loading ? <p>Loading...</p> : <ProfilAccount />}
       </main>
       <Footer />
     </div>
   );
 }
 
-export default ProfilPage;
+export default ProfilePage;
