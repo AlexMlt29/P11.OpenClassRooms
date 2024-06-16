@@ -1,9 +1,9 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import logo1 from "../logos/icon-chat.png";
-import logo2 from "../logos/icon-money.png";
-import logo3 from "../logos/icon-security.png";
+import logo1 from "../images/icon-chat.png";
+import logo2 from "../images/icon-money.png";
+import logo3 from "../images/icon-security.png";
 
 function HomePage() {
   return (
