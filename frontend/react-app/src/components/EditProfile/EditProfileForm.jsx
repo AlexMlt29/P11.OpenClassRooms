@@ -5,12 +5,23 @@ import "../EditProfile/EditProfileForm.css";
 
 const EditProfileForm = ({ userProfile, setIsEditing }) => {
   const [userName, setUserName] = useState(userProfile.userName);
+  const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
 
   const handleSave = () => {
-    dispatch(updateUserProfile({ token, userName }));
-    setIsEditing(false);
+    let validationErrors = {};
+
+    if (!userName) {
+      validationErrors.userName = 'Veuillez renseigner ce champ.';
+    }
+    
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      dispatch(updateUserProfile({ token, userName }));
+      setIsEditing(false);
+    }
   };
 
   const handleCancel = () => {
@@ -21,19 +32,16 @@ const EditProfileForm = ({ userProfile, setIsEditing }) => {
     <div className="edit-profile-form">
       <h2 className="edit-user-info">Edit user info</h2>
       <div>
-        <label>User name:</label>
-        <input
-          type="text"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-        />
+        <label htmlFor="username" className="edit-user-info">Username :</label>
+        <input id="username" type="username" value={userName} onChange={(e) => setUserName(e.target.value)} required />
+        {errors.userName && <div className="error">{errors.userName}</div>}
       </div>
       <div>
-        <label>First name:</label>
+        <label className="edit-user-info">First name :</label>
         <input type="text" value={userProfile.firstName} disabled />
       </div>
       <div>
-        <label>Last name:</label>
+        <label className="edit-user-info">Last name :</label>
         <input type="text" value={userProfile.lastName} disabled />
       </div>
       <div className="buttons">
