@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/argentBankLogo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import ProfilAccount from "../components/ProfilAccount";
+import ProfileAccount from "../components/ProfileAccount";
 
 function ProfilePage() {
   const dispatch = useDispatch();
@@ -53,7 +53,7 @@ function ProfilePage() {
         </div>
         <h2 className="sr-only">Accounts</h2>
         {error && <p className="error-message">{error}</p>}
-        {loading ? <p>Loading...</p> : <ProfilAccount />}
+        {loading ? <p>Loading...</p> : <ProfileAccount />}
       </main>
       <Footer />
     </div>
