@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/argentBankLogo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import ProfilAccount from "../components/ProfilAccount"
 
 function ProfilPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,7 +19,7 @@ function ProfilPage() {
       setIsAuthenticated(true);
       fetchProfile(token);
     }
-  }, []);
+  }, [navigate]);
 
   const fetchProfile = async (token) => {
     try {
@@ -45,19 +45,10 @@ function ProfilPage() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsAuthenticated(false);
-    navigate('/SignInPage');
   };
 
   if (!isAuthenticated) {
-    return (
-      <div className="app-container">
-        <Header />
-        <main className="main bg-dark">
-          <h1 className="error-login">Log Out Successful!</h1>
-        </main>
-        <Footer />
-      </div>
-    );
+    navigate('/');
   }
 
   return (
@@ -69,6 +60,7 @@ function ProfilPage() {
         </Link>
         <div>
           <Link onClick={handleLogout} className="main-nav-item">
+            {userProfile && `${userProfile.userName}`}
             <FontAwesomeIcon icon={faUserCircle} className="fa fa-user-circle" />
             Log Out
           </Link>
@@ -79,42 +71,13 @@ function ProfilPage() {
           <h1>
             Welcome back
             <br />
-            {userProfile && `${userProfile.firstName} ${userProfile.lastName}`}!
+            {userProfile && `${userProfile.firstName} ${userProfile.lastName}`} !
           </h1>
           <button className="edit-button">Edit Name</button>
         </div>
         <h2 className="sr-only">Accounts</h2>
         {error && <p className="error-message">{error}</p>}
-        <section className="account">
-          <div className="account-content-wrapper">
-            <h3 className="account-title">Argent Bank Checking (x8349)</h3>
-            <p className="account-amount">?</p>
-            <p className="account-amount-description">Available Balance</p>
-          </div>
-          <div className="account-content-wrapper cta">
-            <button className="transaction-button">View transactions</button>
-          </div>
-        </section>
-        <section className="account">
-          <div className="account-content-wrapper">
-            <h3 className="account-title">Argent Bank Savings (x6712)</h3>
-            <p className="account-amount">?</p>
-            <p className="account-amount-description">Available Balance</p>
-          </div>
-          <div className="account-content-wrapper cta">
-            <button className="transaction-button">View transactions</button>
-          </div>
-        </section>
-        <section className="account">
-          <div className="account-content-wrapper">
-            <h3 className="account-title">Argent Bank Credit Card (x8349)</h3>
-            <p className="account-amount">?</p>
-            <p className="account-amount-description">Current Balance</p>
-          </div>
-          <div className="account-content-wrapper cta">
-            <button className="transaction-button">View transactions</button>
-          </div>
-        </section>
+        <ProfilAccount />
       </main>
       <Footer />
     </div>
