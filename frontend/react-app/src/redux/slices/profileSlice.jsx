@@ -1,4 +1,3 @@
-// src/redux/slices/profileSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchUserProfile = createAsyncThunk(
