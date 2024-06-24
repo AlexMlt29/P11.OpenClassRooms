@@ -1,10 +1,27 @@
-import React from "react";
-import image from "../../images/argentBankLogo.png";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import image from "../../images/argentBankLogo.png";
+import { fetchUserProfile } from "../../redux/slices/profileSlice";
 
 function Header() {
+  const dispatch = useDispatch();
+  const { userProfile, loading, error } = useSelector((state) => state.profile);
+  
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(fetchUserProfile(token));
+    }
+  }, [dispatch]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  };
+
   return (
     <header>
       <nav className="main-nav">
@@ -13,10 +30,20 @@ function Header() {
           <h1 className="sr-only">Argent Bank</h1>
         </Link>
         <div>
-          <Link to="/AuthPage">
-            <FontAwesomeIcon icon={faUserCircle} className="fa fa-user-circle" />
-            Sign In
-          </Link>
+          {loading && <p>Loading...</p>}
+          {error && <p>{error}</p>}
+          {userProfile ? (
+            <Link onClick={handleLogout} className="main-nav-item">
+              {userProfile.userName}
+              <FontAwesomeIcon icon={faUserCircle} className="fa fa-user-circle" />
+              Log Out
+            </Link>
+          ) : (
+            <Link to="/AuthPage">
+              <FontAwesomeIcon icon={faUserCircle} className="fa fa-user-circle" />
+              Sign In
+            </Link>
+          )}
         </div>
       </nav>
     </header>

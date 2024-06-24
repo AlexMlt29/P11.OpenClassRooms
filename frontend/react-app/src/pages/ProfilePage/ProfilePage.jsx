@@ -1,33 +1,24 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import image from "../../images/argentBankLogo.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import Footer from "../../components/Footer/Footer";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import UserProfileAccount from "../../components/UserProfile/UserProfileAccount";
 import EditProfilePage from "../../components/EditProfile/EditProfileForm";
-import UserProfilePage from "../../components/UserProfile/UserProfilePage";
+import { fetchUserProfile } from "../../redux/slices/profileSlice";
 import "./ProfilePage.css";
 
 function ProfilPage() {
+  const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
-  const { userProfile, error, loading, handleLogout } = UserProfilePage();
+  const { userProfile, loading, error } = useSelector((state) => state.profile);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(fetchUserProfile(token));
+    }
+  }, [dispatch]);
 
   return (
     <div className="app-container">
-      <nav className="main-nav">
-        <Link to="/" className="main-nav-logo">
-          <img className="main-nav-logo-image" src={image} alt="Argent Bank Logo" />
-          <h1 className="sr-only">Argent Bank</h1>
-        </Link>
-        <div>
-          <Link onClick={handleLogout} className="main-nav-item">
-            {userProfile && `${userProfile.userName}`}
-            <FontAwesomeIcon icon={faUserCircle} className="fa fa-user-circle" />
-            Log Out
-          </Link>
-        </div>
-      </nav>
       <main className="main bg-dark">
         <div className="header">
           <h1>
@@ -35,14 +26,19 @@ function ProfilPage() {
             <br />
             {userProfile && `${userProfile.firstName} ${userProfile.lastName}`} !
           </h1>
-          {!isEditing && <button className="edit-button" onClick={() => setIsEditing(true)}>Edit Name</button>}
-          {isEditing && <EditProfilePage userProfile={userProfile} setIsEditing={setIsEditing} />}
+          {!isEditing && (
+            <button className="edit-button" onClick={() => setIsEditing(true)}>
+              Edit Name
+            </button>
+          )}
+          {isEditing && (
+            <EditProfilePage userProfile={userProfile} setIsEditing={setIsEditing} />
+          )}
         </div>
         <h2 className="sr-only">Accounts</h2>
         {error && <p className="error-message">{error}</p>}
         {loading ? <p>Loading...</p> : <UserProfileAccount />}
       </main>
-      <Footer />
     </div>
   );
 }

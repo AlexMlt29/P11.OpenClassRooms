@@ -7,13 +7,13 @@ const EditProfileForm = ({ userProfile, setIsEditing }) => {
   const [userName, setUserName] = useState(userProfile.userName);
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   const handleSave = () => {
     let validationErrors = {};
 
     if (!userName) {
-      validationErrors.userName = 'Veuillez renseigner ce champ.';
+      validationErrors.userName = "Veuillez renseigner ce champ.";
     }
     
     setErrors(validationErrors);

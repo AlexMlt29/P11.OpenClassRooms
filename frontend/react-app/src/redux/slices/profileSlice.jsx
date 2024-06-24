@@ -1,19 +1,19 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchUserProfile = createAsyncThunk(
-  'profile/fetchUserProfile',
+  "profile/fetchUserProfile",
   async (token, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:3001/api/v1/user/profile', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3001/api/v1/user/profile", {
+        method: "POST",
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({}),
       });
       if (!response.ok) {
-        throw new Error('Failed to fetch profile data');
+        throw new Error("Failed to fetch profile data");
       }
       const data = await response.json();
       return data.body;
@@ -24,19 +24,19 @@ export const fetchUserProfile = createAsyncThunk(
 );
 
 export const updateUserProfile = createAsyncThunk(
-  'profile/updateUserProfile',
+  "profile/updateUserProfile",
   async ({ token, userName }, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:3001/api/v1/user/profile', {
-        method: 'PUT',
+      const response = await fetch("http://localhost:3001/api/v1/user/profile", {
+        method: "PUT",
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ userName }),
       });
       if (!response.ok) {
-        throw new Error('Failed to update profile data');
+        throw new Error("Failed to update profile data");
       }
       const data = await response.json();
       return data.body;
@@ -47,7 +47,7 @@ export const updateUserProfile = createAsyncThunk(
 );
 
 const profileSlice = createSlice({
-  name: 'profile',
+  name: "profile",
   initialState: {
     userProfile: null,
     error: null,

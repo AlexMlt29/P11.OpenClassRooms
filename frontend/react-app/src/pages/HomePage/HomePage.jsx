@@ -1,6 +1,4 @@
 import React from "react";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
 import icon1 from "../../images/icon-chat.png";
 import icon2 from "../../images/icon-money.png";
 import icon3 from "../../images/icon-security.png";
@@ -9,7 +7,6 @@ import "./HomePage.css";
 function HomePage() {
   return (
     <div className="app-container">
-      <Header />
       <main>
         <div className="hero">
           <section className="hero-content">
@@ -39,7 +36,6 @@ function HomePage() {
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }
