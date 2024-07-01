@@ -24,11 +24,15 @@ function Header({ userProfile }) {
         </Link>
         <div>
           {userProfile ? (
-            <Link onClick={handleLogout} className="main-nav-item">
-              {userProfile.userName}
-              <FontAwesomeIcon icon={faUserCircle} className="fa fa-user-circle" />
-              Log Out
-            </Link>
+            <>
+              <Link to="/ProfilePage" className="main-nav-item">
+                {userProfile.userName}
+              </Link>
+              <Link onClick={handleLogout} className="main-nav-item">
+                <FontAwesomeIcon icon={faUserCircle} className="fa fa-user-circle" />
+                Log Out
+              </Link>
+            </>
           ) : (
             <Link to="/AuthPage">
               <FontAwesomeIcon icon={faUserCircle} className="fa fa-user-circle" />
