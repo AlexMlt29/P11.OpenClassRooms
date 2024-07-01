@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import UserProfileAccount from "../../components/UserProfile/UserProfileAccount";
 import EditProfilePage from "../../components/EditProfile/EditProfileForm";
-import { fetchUserProfile } from "../../redux/slices/profileSlice";
 import "./ProfilePage.css";
 
-function ProfilPage() {
-  const dispatch = useDispatch();
+function ProfilePage({ userProfile }) {
   const [isEditing, setIsEditing] = useState(false);
-  const { userProfile, loading, error } = useSelector((state) => state.profile);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      dispatch(fetchUserProfile(token));
-    }
-  }, [dispatch]);
+  const { loading, error } = useSelector((state) => state.profile);
 
   return (
     <div className="app-container">
@@ -24,7 +15,7 @@ function ProfilPage() {
           <h1>
             Welcome back
             <br />
-            {userProfile && `${userProfile.firstName} ${userProfile.lastName}`} !
+            {userProfile && `${userProfile.firstName} ${userProfile.lastName}`}!
           </h1>
           {!isEditing && (
             <button className="edit-button" onClick={() => setIsEditing(true)}>
@@ -43,4 +34,4 @@ function ProfilPage() {
   );
 }
 
-export default ProfilPage;
+export default ProfilePage;
