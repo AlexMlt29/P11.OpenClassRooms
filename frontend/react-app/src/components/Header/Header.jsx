@@ -1,25 +1,26 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import image from "../../images/argentBankLogo.png";
-import { fetchUserProfile } from "../../redux/slices/profileSlice";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import image from '../../images/argentBankLogo.png';
+import { fetchUserProfile, clearUserProfile } from '../../redux/slices/profileSlice';
 
 function Header() {
   const dispatch = useDispatch();
-  const { userProfile, loading, error } = useSelector((state) => state.profile);
-  
+  const { userProfile, loading } = useSelector((state) => state.profile);
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (token) {
       dispatch(fetchUserProfile(token));
     }
   }, [dispatch]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/";
+    localStorage.removeItem('token');
+    dispatch(clearUserProfile());
+    window.location.href = '/';
   };
 
   return (
@@ -31,7 +32,6 @@ function Header() {
         </Link>
         <div>
           {loading && <p>Loading...</p>}
-          {error && <p>{error}</p>}
           {userProfile ? (
             <Link onClick={handleLogout} className="main-nav-item">
               {userProfile.userName}
