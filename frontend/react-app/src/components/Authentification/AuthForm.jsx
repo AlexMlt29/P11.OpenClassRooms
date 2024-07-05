@@ -1,24 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess, loginFailure } from "../../redux/slices/authSlice";
 import "../Authentification/Auth.css";
 
 const AuthForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const error = useSelector(state => state.auth.error);
   const dispatch = useDispatch();
+  const error = useSelector((state) => state.auth.error);
+  const savedEmail = useSelector((state) => state.auth.email);
+  const savedPassword = useSelector((state) => state.auth.password);
+  const savedRememberMe = useSelector((state) => state.auth.rememberMe);
 
-  useEffect(() => {
-    const savedEmail = localStorage.getItem("email");
-    const savedPassword = localStorage.getItem("password");
-    if (savedEmail && savedPassword) {
-      setEmail(savedEmail);
-      setPassword(savedPassword);
-      setRememberMe(true);
-    }
-  }, []);
+  const [email, setEmail] = useState(savedEmail || "");
+  const [password, setPassword] = useState(savedPassword || "");
+  const [rememberMe, setRememberMe] = useState(savedRememberMe);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,9 +21,9 @@ const AuthForm = () => {
       const response = await fetch("http://localhost:3001/api/v1/user/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
@@ -37,17 +31,14 @@ const AuthForm = () => {
       }
 
       const data = await response.json();
-      localStorage.setItem("token", data.body.token);
 
       if (rememberMe) {
-        localStorage.setItem("email", email);
-        localStorage.setItem("password", password);
+        localStorage.setItem("token", data.body.token);
       } else {
-        localStorage.removeItem("email");
-        localStorage.removeItem("password");
+        sessionStorage.setItem("token", data.body.token);
       }
 
-      dispatch(loginSuccess({ user: data.body.user, token: data.body.token }));
+      dispatch(loginSuccess({ token: data.body.token, email, password, rememberMe }));
       window.location.href = "/ProfilePage";
     } catch (err) {
       dispatch(loginFailure("Email ou mot de passe incorrect."));

@@ -7,7 +7,11 @@ const EditProfileForm = ({ userProfile, setIsEditing }) => {
   const [userName, setUserName] = useState(userProfile.userName);
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
-  const token = localStorage.getItem("token");
+  let token = localStorage.getItem("token");
+
+  if (!token) {
+    token = sessionStorage.getItem("token");
+  };
 
   const handleSave = () => {
     let validationErrors = {};

@@ -12,13 +12,13 @@ import "./App.css";
 function App() {
   const dispatch = useDispatch();
   const { userProfile, loading, error } = useSelector((state) => state.profile);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
   useEffect(() => {
-    if (token && !userProfile) {
+    if (token && !userProfile && !loading) {
       dispatch(fetchUserProfile(token));
     }
-  }, [dispatch, token, userProfile]);
+  }, [dispatch, token, userProfile, loading]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
