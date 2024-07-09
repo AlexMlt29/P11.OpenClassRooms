@@ -15,7 +15,7 @@ function ProfilePage({ userProfile }) {
           <h1>
             Welcome back
             <br />
-            {userProfile && `${userProfile.firstName} ${userProfile.lastName}`}!
+            {userProfile && `${userProfile.firstName} ${userProfile.lastName}`} !
           </h1>
           {!isEditing && (
             <button className="edit-button" onClick={() => setIsEditing(true)}>
