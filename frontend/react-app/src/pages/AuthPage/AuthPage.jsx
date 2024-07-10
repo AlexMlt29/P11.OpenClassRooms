@@ -3,10 +3,11 @@ import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import AuthForm from "../../components/Authentification/AuthForm";
+import { getCookie } from "../../components/Cookie/Cookie";
 import "./AuthPage.css";
 
 const AuthPage = () => {
-  const token = useSelector((state) => state.auth.token);
+  const token = getCookie("token");
 
   return (
     <div className="app-container">
@@ -19,7 +20,7 @@ const AuthPage = () => {
               <AuthForm />
             </>
           ) : (
-            <h1>You are already logged in !</h1>
+            <h1>You are already logged in!</h1>
           )}
         </section>
       </main>

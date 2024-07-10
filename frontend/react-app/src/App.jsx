@@ -7,12 +7,13 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import { fetchUserProfile } from "./redux/slices/profileSlice";
+import { getCookie } from "../src/components/Cookie/Cookie";
 import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
   const { userProfile, loading, error } = useSelector((state) => state.profile);
-  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+  const token = getCookie("token");
 
   useEffect(() => {
     if (token && !userProfile && !loading) {

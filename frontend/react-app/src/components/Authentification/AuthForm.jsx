@@ -1,18 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess, loginFailure } from "../../redux/slices/authSlice";
+import { loginSuccess, loginFailure, saveEmail } from "../../redux/slices/authSlice";
+import { setCookie, getCookie } from "../../components/Cookie/Cookie";
 import "../Authentification/Auth.css";
 
 const AuthForm = () => {
   const dispatch = useDispatch();
   const error = useSelector((state) => state.auth.error);
-  const savedEmail = useSelector((state) => state.auth.email);
-  const savedPassword = useSelector((state) => state.auth.password);
-  const savedRememberMe = useSelector((state) => state.auth.rememberMe);
+  const savedEmail = useSelector((state) => state.auth.savedEmail);
+  const savedRememberMe = useSelector((state) => state.auth.savedRememberMe);
 
-  const [email, setEmail] = useState(savedEmail || "");
-  const [password, setPassword] = useState(savedPassword || "");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(savedRememberMe);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token && rememberMe) {
+      fetch("http://localhost:3001/api/v1/user/profile", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({})
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok " + response.statusText);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setEmail(data.body.email);
+          dispatch(saveEmail(data.body.email));
+        })
+        .catch((error) => {
+          console.error("Error fetching user profile:", error);
+        });
+    }
+  }, [dispatch, rememberMe]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,12 +60,14 @@ const AuthForm = () => {
       const data = await response.json();
 
       if (rememberMe) {
-        localStorage.setItem("token", data.body.token);
+        setCookie("token", data.body.token, 30); // Cookie expires in 30 days
+        localStorage.setItem("token", data.body.token); // Store token in local storage
       } else {
-        sessionStorage.setItem("token", data.body.token);
+        setCookie("token", data.body.token); // Session cookie
+        localStorage.removeItem("token");
       }
 
-      dispatch(loginSuccess({ token: data.body.token, email, password, rememberMe }));
+      dispatch(loginSuccess({ token: data.body.token, email, rememberMe }));
       window.location.href = "/ProfilePage";
     } catch (err) {
       dispatch(loginFailure("Email ou mot de passe incorrect."));
