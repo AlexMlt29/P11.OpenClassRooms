@@ -7,7 +7,6 @@ import "../Authentification/Auth.css";
 const AuthForm = () => {
   const dispatch = useDispatch();
   const error = useSelector((state) => state.auth.error);
-  const savedEmail = useSelector((state) => state.auth.savedEmail);
   const savedRememberMe = useSelector((state) => state.auth.savedRememberMe);
 
   const [email, setEmail] = useState("");
@@ -33,7 +32,6 @@ const AuthForm = () => {
         })
         .then((data) => {
           setEmail(data.body.email);
-          dispatch(saveEmail(data.body.email));
         })
         .catch((error) => {
           console.error("Error fetching user profile:", error);
