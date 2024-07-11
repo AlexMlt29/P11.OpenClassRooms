@@ -58,7 +58,7 @@ const AuthForm = () => {
       const data = await response.json();
 
       if (rememberMe) {
-        setCookie("token", data.body.token, 30); // durée de vie du cookie en jours
+        setCookie("token", data.body.token, 30); // Token + durée de vie du cookie en jours
         localStorage.setItem("token", data.body.token); // Token dans local storage
       } else {
         setCookie("token", data.body.token); // Token dans cookie
