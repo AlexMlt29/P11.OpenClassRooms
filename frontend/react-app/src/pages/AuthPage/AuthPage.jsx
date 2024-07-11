@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import AuthForm from "../../components/Authentification/AuthForm";
