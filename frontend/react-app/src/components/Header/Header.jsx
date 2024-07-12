@@ -5,12 +5,13 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import image from '../../images/argentBankLogo.png';
 import { useDispatch } from 'react-redux';
 import { clearUserProfile } from '../../redux/slices/profileSlice';
+import { logout } from '../../redux/slices/authSlice';
 
 function Header({ userProfile }) {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    dispatch(logout());
     dispatch(clearUserProfile());
     window.location.href = '/';
   };

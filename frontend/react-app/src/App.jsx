@@ -7,23 +7,18 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import { fetchUserProfile } from "./redux/slices/profileSlice";
-import { getCookie } from "../src/components/Cookie/Cookie";
 import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
   const { userProfile, loading, error } = useSelector((state) => state.profile);
-<<<<<<< HEAD
-  const token = getCookie("token");
-=======
-  const token = localStorage.getItem("token");
->>>>>>> parent of 2dc03f7 (work in progress for rememberMe option)
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
   useEffect(() => {
-    if (token && !userProfile) {
+    if (token && !userProfile && !loading) {
       dispatch(fetchUserProfile(token));
     }
-  }, [dispatch, token, userProfile]);
+  }, [dispatch, token, userProfile, loading]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;

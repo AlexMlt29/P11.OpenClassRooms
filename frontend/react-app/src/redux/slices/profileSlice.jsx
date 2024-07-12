@@ -1,14 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getCookie, deleteCookie } from "../../components/Cookie/Cookie";
 
 export const fetchUserProfile = createAsyncThunk(
   "profile/fetchUserProfile",
-  async (_, { rejectWithValue }) => {
-    const token = getCookie("token");
-    if (!token) {
-      return rejectWithValue("No token found");
-    }
-
+  async (token, { rejectWithValue }) => {
     try {
       const response = await fetch("http://localhost:3001/api/v1/user/profile", {
         method: "POST",
@@ -20,7 +14,7 @@ export const fetchUserProfile = createAsyncThunk(
       });
       if (!response.ok) {
         if (response.status === 401) {
-          deleteCookie('token');
+          localStorage.removeItem('token');
           throw new Error("Unauthorized: Invalid token");
         }
         throw new Error("Failed to fetch profile data");
@@ -35,12 +29,7 @@ export const fetchUserProfile = createAsyncThunk(
 
 export const updateUserProfile = createAsyncThunk(
   "profile/updateUserProfile",
-  async ({ userName }, { rejectWithValue }) => {
-    const token = getCookie("token");
-    if (!token) {
-      return rejectWithValue("No token found");
-    }
-
+  async ({ token, userName }, { rejectWithValue }) => {
     try {
       const response = await fetch("http://localhost:3001/api/v1/user/profile", {
         method: "PUT",
