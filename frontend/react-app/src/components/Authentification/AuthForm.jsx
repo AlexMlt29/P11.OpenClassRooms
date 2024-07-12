@@ -6,12 +6,10 @@ import "../Authentification/Auth.css";
 const AuthForm = () => {
   const dispatch = useDispatch();
   const error = useSelector((state) => state.auth.error);
-  const savedEmail = useSelector((state) => state.auth.email);
-  const savedPassword = useSelector((state) => state.auth.password);
   const savedRememberMe = useSelector((state) => state.auth.rememberMe);
 
-  const [email, setEmail] = useState(savedEmail || "");
-  const [password, setPassword] = useState(savedPassword || "");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(savedRememberMe);
 
   const handleSubmit = async (event) => {
