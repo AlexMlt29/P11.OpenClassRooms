@@ -13,13 +13,17 @@ import "./App.css";
 function App() {
   const dispatch = useDispatch();
   const { userProfile, loading, error } = useSelector((state) => state.profile);
+<<<<<<< HEAD
   const token = getCookie("token");
+=======
+  const token = localStorage.getItem("token");
+>>>>>>> parent of 2dc03f7 (work in progress for rememberMe option)
 
   useEffect(() => {
-    if (token && !userProfile && !loading) {
+    if (token && !userProfile) {
       dispatch(fetchUserProfile(token));
     }
-  }, [dispatch, token, userProfile, loading]);
+  }, [dispatch, token, userProfile]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;

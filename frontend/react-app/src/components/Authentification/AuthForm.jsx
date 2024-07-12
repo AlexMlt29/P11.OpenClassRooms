@@ -5,13 +5,30 @@ import { setCookie, getCookie } from "../../components/Cookie/Cookie";
 import "../Authentification/Auth.css";
 
 const AuthForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const error = useSelector(state => state.auth.error);
   const dispatch = useDispatch();
+<<<<<<< HEAD
   const error = useSelector((state) => state.auth.error);
   const savedRememberMe = useSelector((state) => state.auth.savedRememberMe);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(savedRememberMe);
+=======
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    const savedPassword = localStorage.getItem("password");
+    if (savedEmail && savedPassword) {
+      setEmail(savedEmail);
+      setPassword(savedPassword);
+      setRememberMe(true);
+    }
+  }, []);
+>>>>>>> parent of 2dc03f7 (work in progress for rememberMe option)
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -46,9 +63,9 @@ const AuthForm = () => {
       const response = await fetch("http://localhost:3001/api/v1/user/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password })
       });
 
       if (!response.ok) {
@@ -56,8 +73,10 @@ const AuthForm = () => {
       }
 
       const data = await response.json();
+      localStorage.setItem("token", data.body.token);
 
       if (rememberMe) {
+<<<<<<< HEAD
         setCookie("token", data.body.token, 30); // Token + durée de vie du cookie en jours
         localStorage.setItem("token", data.body.token); // Token dans local storage
       } else {
@@ -66,6 +85,16 @@ const AuthForm = () => {
       }
 
       dispatch(loginSuccess({ token: data.body.token, email, rememberMe }));
+=======
+        localStorage.setItem("email", email);
+        localStorage.setItem("password", password);
+      } else {
+        localStorage.removeItem("email");
+        localStorage.removeItem("password");
+      }
+
+      dispatch(loginSuccess({ user: data.body.user, token: data.body.token }));
+>>>>>>> parent of 2dc03f7 (work in progress for rememberMe option)
       window.location.href = "/ProfilePage";
     } catch (err) {
       dispatch(loginFailure("Email ou mot de passe incorrect."));
