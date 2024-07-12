@@ -1,60 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess, loginFailure, saveEmail } from "../../redux/slices/authSlice";
-import { setCookie, getCookie } from "../../components/Cookie/Cookie";
+import { loginSuccess, loginFailure } from "../../redux/slices/authSlice";
 import "../Authentification/Auth.css";
 
 const AuthForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const error = useSelector(state => state.auth.error);
   const dispatch = useDispatch();
-<<<<<<< HEAD
   const error = useSelector((state) => state.auth.error);
-  const savedRememberMe = useSelector((state) => state.auth.savedRememberMe);
+  const savedEmail = useSelector((state) => state.auth.email);
+  const savedPassword = useSelector((state) => state.auth.password);
+  const savedRememberMe = useSelector((state) => state.auth.rememberMe);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(savedEmail || "");
+  const [password, setPassword] = useState(savedPassword || "");
   const [rememberMe, setRememberMe] = useState(savedRememberMe);
-=======
-
-  useEffect(() => {
-    const savedEmail = localStorage.getItem("email");
-    const savedPassword = localStorage.getItem("password");
-    if (savedEmail && savedPassword) {
-      setEmail(savedEmail);
-      setPassword(savedPassword);
-      setRememberMe(true);
-    }
-  }, []);
->>>>>>> parent of 2dc03f7 (work in progress for rememberMe option)
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token && rememberMe) {
-      fetch("http://localhost:3001/api/v1/user/profile", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({})
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok " + response.statusText);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setEmail(data.body.email);
-        })
-        .catch((error) => {
-          console.error("Error fetching user profile:", error);
-        });
-    }
-  }, [dispatch, rememberMe]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -63,9 +21,9 @@ const AuthForm = () => {
       const response = await fetch("http://localhost:3001/api/v1/user/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
@@ -73,28 +31,14 @@ const AuthForm = () => {
       }
 
       const data = await response.json();
-      localStorage.setItem("token", data.body.token);
 
       if (rememberMe) {
-<<<<<<< HEAD
-        setCookie("token", data.body.token, 30); // Token + durée de vie du cookie en jours
-        localStorage.setItem("token", data.body.token); // Token dans local storage
+        localStorage.setItem("token", data.body.token);
       } else {
-        setCookie("token", data.body.token); // Token dans cookie
-        localStorage.removeItem("token");
+        sessionStorage.setItem("token", data.body.token);
       }
 
-      dispatch(loginSuccess({ token: data.body.token, email, rememberMe }));
-=======
-        localStorage.setItem("email", email);
-        localStorage.setItem("password", password);
-      } else {
-        localStorage.removeItem("email");
-        localStorage.removeItem("password");
-      }
-
-      dispatch(loginSuccess({ user: data.body.user, token: data.body.token }));
->>>>>>> parent of 2dc03f7 (work in progress for rememberMe option)
+      dispatch(loginSuccess({ token: data.body.token, email, password, rememberMe }));
       window.location.href = "/ProfilePage";
     } catch (err) {
       dispatch(loginFailure("Email ou mot de passe incorrect."));
