@@ -14,7 +14,7 @@ export const fetchUserProfile = createAsyncThunk(
       });
       if (!response.ok) {
         if (response.status === 401) {
-          localStorage.removeItem('token');
+          localStorage.removeItem("token");
           throw new Error("Unauthorized: Invalid token");
         }
         throw new Error("Failed to fetch profile data");
@@ -60,6 +60,8 @@ const profileSlice = createSlice({
   reducers: {
     clearUserProfile(state) {
       state.userProfile = null;
+      state.error = null;
+      state.loading = false;
     }
   },
   extraReducers: (builder) => {

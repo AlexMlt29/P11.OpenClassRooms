@@ -1,11 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import image from '../../images/argentBankLogo.png';
-import { useDispatch } from 'react-redux';
-import { clearUserProfile } from '../../redux/slices/profileSlice';
-import { logout } from '../../redux/slices/authSlice';
+import React from "react";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import image from "../../images/argentBankLogo.png";
+import { useDispatch } from "react-redux";
+import { clearUserProfile } from "../../redux/slices/profileSlice";
+import { logout } from "../../redux/slices/authSlice";
 
 function Header({ userProfile }) {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ function Header({ userProfile }) {
   const handleLogout = () => {
     dispatch(logout());
     dispatch(clearUserProfile());
-    window.location.href = '/';
+    window.location.href = "/";
   };
 
   return (

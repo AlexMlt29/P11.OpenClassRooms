@@ -13,7 +13,7 @@ function ProfilePage({ userProfile }) {
 
   useEffect(() => {
     if (!token) {
-      navigate('/');
+      navigate("/");
     }
   }, [token, navigate]);
 

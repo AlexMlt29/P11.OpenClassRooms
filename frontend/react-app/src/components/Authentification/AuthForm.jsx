@@ -36,7 +36,7 @@ const AuthForm = () => {
         sessionStorage.setItem("token", data.body.token);
       }
 
-      dispatch(loginSuccess({ token: data.body.token, email, password, rememberMe }));
+      dispatch(loginSuccess({ token: data.body.token }));
       window.location.href = "/ProfilePage";
     } catch (err) {
       dispatch(loginFailure("Email ou mot de passe incorrect."));

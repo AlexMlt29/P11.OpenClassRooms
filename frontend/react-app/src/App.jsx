@@ -6,7 +6,8 @@ import AuthPage from "./pages/AuthPage/AuthPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import { fetchUserProfile } from "./redux/slices/profileSlice";
+import { fetchUserProfile, clearUserProfile } from "./redux/slices/profileSlice";
+import { logout } from "./redux/slices/authSlice";
 import "./App.css";
 
 function App() {
@@ -20,8 +21,14 @@ function App() {
     }
   }, [dispatch, token, userProfile, loading]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  useEffect(() => {
+    if (error) {
+      alert("Une erreur de profil est survenue. Vous allez être redirigé vers la page d'accueil.");
+      dispatch(clearUserProfile());
+      dispatch(logout());
+      window.location.href = "/";
+    }
+  }, [error, dispatch]);
 
   return (
     <Router>
@@ -30,6 +37,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/AuthPage" element={<AuthPage />} />
         <Route path="/ProfilePage" element={<ProfilePage userProfile={userProfile} />} />
+        <Route path="*" element={<HomePage />} />
       </Routes>
       <Footer />
     </Router>
